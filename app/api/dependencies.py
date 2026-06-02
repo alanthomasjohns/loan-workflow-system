@@ -35,7 +35,7 @@ def get_current_user(access_token: str | None = Cookie(default=None), db: Sessio
             detail="Invalid token"
         )
 
-    user = db.query(User).filter(User.id == public_id).first()
+    user = db.query(User).filter(User.public_id == public_id).first()
     if not user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
