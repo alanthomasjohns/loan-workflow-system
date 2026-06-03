@@ -1,0 +1,17 @@
+from enum import Enum
+
+
+class LoanStatus(str, Enum):
+    PENDING = "PENDING"
+    SUBMITTED = "SUBMITTED"
+    UNDER_REVIEW = "UNDER_REVIEW"
+    APPROVED = "APPROVED"
+    REJECTED = "REJECTED"
+
+
+class EmploymentType(str, Enum):
+    FULL_TIME = "FULL_TIME"
+    PART_TIME = "PART_TIME"
+    SELF_EMPLOYED = "SELF_EMPLOYED"
+    BUSINESS_OWNER = "BUSINESS_OWNER"
+    UNEMPLOYED = "UNEMPLOYED"

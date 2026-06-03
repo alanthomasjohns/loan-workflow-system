@@ -11,53 +11,17 @@ from app.db.mixins import (
 from app.models.associations import user_groups
 
 
-class User(
-    Base,
-    TimestampMixin,
-    SoftDeleteMixin,
-    PublicUUIDMixin
-):
+class User(Base, TimestampMixin, SoftDeleteMixin, PublicUUIDMixin):
     __tablename__ = "users"
 
-    id = Column(
-        Integer,
-        primary_key=True,
-        index=True
-    )
-
-    first_name = Column(
-        String,
-        nullable=False
-    )
-
-    last_name = Column(
-        String,
-        nullable=False
-    )
-
-    email = Column(
-        String,
-        unique=True,
-        nullable=False,
-        index=True
-    )
-
-    hashed_password = Column(
-        String,
-        nullable=False
-    )
-
-    is_active = Column(
-        Boolean,
-        default=True,
-        nullable=False
-    )
-
-    groups = relationship(
-        "Group",
-        secondary=user_groups,
-        back_populates="users"
-    )
+    id = Column(Integer, primary_key=True, index=True)
+    first_name = Column(String,nullable=False)
+    last_name = Column(String,nullable=False)
+    email = Column(String, unique=True, nullable=False, index=True)
+    hashed_password = Column(String, nullable=False)
+    is_active = Column(Boolean, default=True,nullable=False)
+    groups = relationship("Group", secondary=user_groups, back_populates="users")
+    loan_applications = relationship("LoanApplication", back_populates="user",)
 
     @property
     def full_name(self):
