@@ -15,3 +15,16 @@ class EmploymentType(str, Enum):
     SELF_EMPLOYED = "SELF_EMPLOYED"
     BUSINESS_OWNER = "BUSINESS_OWNER"
     UNEMPLOYED = "UNEMPLOYED"
+
+class DocumentType(str, Enum):
+    PAN = "PAN"
+    AADHAAR = "AADHAAR"
+    PASSPORT = "PASSPORT"
+    SALARY_SLIP = "SALARY_SLIP"
+    BANK_STATEMENT = "BANK_STATEMENT"
+    AGREEMENT = "AGREEMENT"
+
+class DocumentStatus(str, Enum):
+    PENDING = "PENDING"
+    VERIFIED = "VERIFIED"
+    REJECTED = "REJECTED"

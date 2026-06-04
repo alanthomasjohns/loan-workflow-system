@@ -30,5 +30,6 @@ class LoanApplication(Base, PublicUUIDMixin, TimestampMixin, SoftDeleteMixin,):
     annual_income = Column(Numeric(12, 2), nullable=False)
     employment_type = Column(Enum(EmploymentType), nullable=False)
     status = Column(Enum(LoanStatus), default=LoanStatus.PENDING, nullable=False)
+    documents = relationship("LoanDocument", back_populates="loan_application")
 
     user = relationship("User", back_populates="loan_applications")
