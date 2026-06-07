@@ -6,7 +6,7 @@ from app.db.mixins import (
     TimestampMixin,
     SoftDeleteMixin,
 )
-from app.models.enums import DocumentType, DocumentStatus
+from app.models.enums import DocumentType, DocumentStatus, ProcessingStatus
 
 
 class LoanDocument(Base, PublicUUIDMixin, TimestampMixin, SoftDeleteMixin):
@@ -19,6 +19,7 @@ class LoanDocument(Base, PublicUUIDMixin, TimestampMixin, SoftDeleteMixin):
     stored_file_name = Column(String(255), nullable=False)
     file_path = Column(String(500), nullable=False)
     status = Column(Enum(DocumentStatus), default=DocumentStatus.PENDING, nullable=False)
+    processing_status = Column(Enum(ProcessingStatus), default=ProcessingStatus.PENDING, nullable=False)
     file_size = Column(Integer, nullable=False)
     content_type = Column(String(100), nullable=False)
 
