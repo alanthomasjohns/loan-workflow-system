@@ -7,3 +7,16 @@ services:
     container_name: loan-redis
     ports:
       - "6379:6379"
+
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+
+  celery:
+    build: .
+    command: celery -A app.core.celery_app worker --pool=solo --loglevel=info
+    env_file:
+      - .env
