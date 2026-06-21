@@ -4,6 +4,7 @@ from app.models.loan_document import (
     LoanDocument,
     ProcessingStatus
 )
+from app.services.ocr_service import extract_text_from_image
 
 from app.services.pdf_service import (
     extract_text_from_pdf
@@ -22,7 +23,12 @@ def process_document(document_id: int):
 
         document.processing_status = ProcessingStatus.PROCESSING
         db.commit()
-        extracted_text = extract_text_from_pdf(document.file_path)
+        if document.content_type == "application/pdf":
+            extracted_text = extract_text_from_pdf(document.file_path)
+        elif document.content_type.startswith("image/"):
+            extracted_text = extract_text_from_image(document.file_path)
+        else:
+            raise Exception("Unsupported document type")
         document.extracted_text = extracted_text
 
         document.processing_status = ProcessingStatus.COMPLETED
