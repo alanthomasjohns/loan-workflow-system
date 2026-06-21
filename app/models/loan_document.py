@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey,Enum
+from sqlalchemy import Column, Integer, String, ForeignKey,Enum, Text
 from sqlalchemy.orm import relationship
 from app.db.base import Base
 from app.db.mixins import (
@@ -22,5 +22,6 @@ class LoanDocument(Base, PublicUUIDMixin, TimestampMixin, SoftDeleteMixin):
     processing_status = Column(Enum(ProcessingStatus), default=ProcessingStatus.PENDING, nullable=False)
     file_size = Column(Integer, nullable=False)
     content_type = Column(String(100), nullable=False)
+    extracted_text = Column(Text, nullable=True)
 
     loan_application = relationship("LoanApplication", back_populates="documents")

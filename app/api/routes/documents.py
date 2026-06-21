@@ -1,5 +1,5 @@
 from pathlib import Path
-from uuid import uuid4
+from uuid import uuid4, UUID
 
 from fastapi import (
     APIRouter,
@@ -19,6 +19,7 @@ from app.models.loan_document import LoanDocument
 from app.models.enums import DocumentType
 from app.schemas.document import DocumentResponse
 from app.core.constants import ALLOWED_DOCUMENT_TYPES, MAX_DOCUMENT_SIZE
+from app.tasks.document_tasks import process_document
 
 
 router = APIRouter(prefix="/documents", tags=["Documents"],)
@@ -79,4 +80,25 @@ async def upload_document(
     db.add(document)
     db.commit()
     db.refresh(document)
+
+    process_document.delay(document.id)
+
     return document
+
+
+
+@router.get("/{document_public_id}/text")
+def get_extracted_text(document_public_id: UUID, db: Session = Depends(get_db)):
+    document = db.query(LoanDocument).filter(LoanDocument.public_id == document_public_id).first()
+
+    if not document:
+        raise HTTPException(
+            status_code=404,
+            detail="Document not found"
+        )
+
+    return {
+        "document_public_id": document.public_id,
+        "processing_status": document.processing_status,
+        "extracted_text": document.extracted_text
+    }
